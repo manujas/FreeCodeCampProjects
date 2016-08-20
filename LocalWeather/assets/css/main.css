@@ -52,7 +52,8 @@ table {
 
 /* General / Layout */
 html {
-	color: #FFF;
+	color: #EDEDED;
+	font-family: 'Raleway', sans-serif;
 }
 
 body {
@@ -72,18 +73,25 @@ main {
 
 .w-today {
 	font-size: 4rem;
+	font-weight: 600;
 }
 .w-where {
+	font-weight: 300;
 	margin-top: 1rem;
 	font-size: 1.5rem;
 }
 footer {
 	min-height: 10vh;
 	display: flex;
-	flex-flow: row-reverse;
 }
 footer p {
+	width: 100%;
+	color: #FDFDFD;
 	align-self: flex-end;
+}
+footer p a {
+	text-decoration: none;
+	color: inherit;
 }
 
 
