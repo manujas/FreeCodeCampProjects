@@ -21,7 +21,7 @@
 </head>
     <main id="back-gradient" class="tarde">
         <section class="flex-container">
-            <section class="weather">
+            <section id="weather-box" class="weather">
                 <div class="w-today">
                     <i id="w-icon" class="wi wi-na" aria-hidden="true"></i>
                     <span id="w-temp">-</span>
@@ -34,6 +34,9 @@
                         <span id="w-city">-</span>
                     </p>
                 </div>
+            </section>
+            <section id="err-box" class="error hide">
+                <p id="err-msg">ups! Algo salió mal.</p>
             </section>
         </section>
         <footer>
