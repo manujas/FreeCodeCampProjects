@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/weather-icons/2.0.9/css/weather-icons.min.css" charset="utf-8">
 
     <!-- CSS / JS -->
+    <link rel="stylesheet" href="assets/css/loader.css"  charset="utf-8">
     <link rel="stylesheet" href="assets/css/main.css"  charset="utf-8">
     <script src="https://code.jquery.com/jquery-2.2.4.min.js"   integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="   crossorigin="anonymous"></script>
     <script src="assets/js/main.js" charset="utf-8"></script>
@@ -19,9 +20,14 @@
     <!-- FONTS -->
     <link href="https://fonts.googleapis.com/css?family=Raleway:300,600" rel="stylesheet">
 </head>
-    <main id="back-gradient" class="tarde">
+<body class="black">
+    <div id="loader-box" class="loader-in">
+        <div class="uil-sunny-css" style="transform:scale(0.58);"><div class="uil-sunny-circle"></div><div class="uil-sunny-light"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div></div>
+    </div>
+
+    <main>
         <section class="flex-container">
-            <section id="weather-box" class="weather">
+            <section id="weather-box" class="weather hide disapear">
                 <div class="w-today">
                     <i id="w-icon" class="wi wi-na" aria-hidden="true"></i>
                     <span id="w-temp">-</span>
@@ -35,16 +41,13 @@
                     </p>
                 </div>
             </section>
-            <section id="err-box" class="error hide">
-                <p id="err-msg">ups! Algo salió mal.</p>
+            <section id="error-box" class="error hide disapear">
             </section>
         </section>
         <footer>
             <p>with &#9829; by <a href="https://twitter.com/manujas4" target="_blank">manujas</a></p>
         </footer>
     </main>
-<body>
-
 </body>
 
 </html>

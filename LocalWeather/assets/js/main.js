@@ -24,7 +24,7 @@ var weatherIcon = {
 };
 
 /**
- * Get weather data by coors
+ * Get weather data by coords
  */
 function getWeatherData(coords, callback) {
     var weatherData;
@@ -39,8 +39,8 @@ function getWeatherData(coords, callback) {
     })
     .fail(function(err) {
         console.log(err.responceText);
-        var errMsg = "Sorry, our meteorologist is taking a snap. Try again";
-        handleError(true, errMsg);
+        var errMsg = "<p>Sorry, our meteorologist is taking a snap. Try again</p>";
+        display('error', errMsg);
     });
 }
 
@@ -76,6 +76,16 @@ function setIcon(icon) {
 }
 
 /**
+ * Set error message
+ */
+function setErrorMsg(errorBox, msg) {
+    // default message
+    msg = msg || "<p>Sorry, something goes wrong. Try again</p>";
+
+    errorBox.html(msg);
+}
+
+/**
  * Update de DOM with the weather data
  */
 function showWeather(weatherData) {
@@ -83,44 +93,69 @@ function showWeather(weatherData) {
     setType(weatherData.weather[0].description);
     setCity(weatherData.name);
     setIcon(weatherData.weather[0].icon);
+
+    display('weather');
 }
 
 /**
- * Shown/hide error function
+ * Show/hide boxes
  */
-function handleError(show, msg) {
-    msg = msg || "Sorry, we don't now what happen. Try again";
-    var errBox = $("#err-box");
+function toggleBox (box, show) {
+    if (show && box.hasClass("hide")) {
+        box.removeClass("disapear");
+        setTimeout(function() {
+            box.removeClass("hide");
+        }, 600);
+    } else if (!show && !box.hasClass("hide")) {
+        box.addClass("hide");
+        setTimeout(function() {
+            box.addClass("disapear");
+        }, 600);
+    }
+}
+
+/**
+ * Handle the disply of boxes
+ */
+function display(box, errorMsg) {
+    errorMsg = errorMsg || undefined;
+
+    // boxes
     var weatherBox = $("#weather-box");
+    var loaderBox = $("#loader-box");
+    var errorBox = $("#error-box");
 
-    // hide all boxes
-    if (!errBox.hasClass('hide')) {
-        errBox.addClass("hide", 1500);
-    }
-    if (!weatherBox.hasClass('hide')) {
-        weatherBox.addClass("hide", 1500);
-    }
-
-    // show the right box
-    if (show) {
-        setTimeout(function() {
-            errBox.html(msg).removeClass("hide", 1500);
-        }, 1500);
-        return;
-    } else {
-        setTimeout(function() {
-            weatherBox.removeClass("hide");
-        }, 1500);
+    switch (box) {
+        case 'loader':
+            toggleBox(errorBox, false);
+            toggleBox(weatherBox, false);
+            toggleBox(loaderBox, true);
+            break;
+        case 'weather':
+            toggleBox(errorBox, false);
+            toggleBox(loaderBox, false);
+            toggleBox(weatherBox, true);
+            break;
+        case 'error':
+            setErrorMsg(errorBox, errorMsg);
+            toggleBox(loaderBox, false);
+            toggleBox(weatherBox, false);
+            toggleBox(errorBox, true);
+            break;
+        default:
+            console.log('must provied a box element!');
+            break;
     }
 }
 
 // the magic start here
 (function(){
-    // Loader
-
     // check browser support
     if (!navigator.geolocation) {
-        handleError(true, "Sorry, your browser has not support for geolocation. Try with Firefox or Chrome");
+        var errMsg = "<p>Sorry, your browser has not support for geolocation. Try with Firefox or Chrome</p>";
+
+        display('error', errMsg);
+
         return;
     }
 
@@ -135,15 +170,15 @@ function handleError(show, msg) {
 
         // change background gradient by the hours
 
-    }, function(posErr) { // on error
+    }, function(err) { // on error
         // default msg
-        var errMsg = "Sorry, something it's not right. Try again.";
+        var errMsg = "<p>Sorry, something it's not right. Try again.</p>";
 
         // user block
-        if (posErr.code === 1) {
-            errMsg = "Please, we need that you enable geolocation in your browser.";
+        if (err.code === 1) {
+            errMsg = "<p>Please, we need that you enable geolocation in your browser.</p>";
         }
 
-        handleError(true, errMsg);
+        display('error', errMsg);
     });
 })();
