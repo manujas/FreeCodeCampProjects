@@ -108,6 +108,7 @@ footer p a {
 .hide {
 	visibility: hide;
 	opacity: 0;
+	height: 0;
 }
 
 .tarde {
