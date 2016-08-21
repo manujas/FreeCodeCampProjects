@@ -86,6 +86,35 @@ function setErrorMsg(errorBox, msg) {
 }
 
 /**
+ * Change the background depending on the hour of the thay
+ * the css animation is not suported right now
+ */
+function setBackground() {
+    // nowing what time is
+    var date = new Date();
+    var hour = date.getHours();
+    var background = "";
+    var backgroundBox = $("#background");
+
+    if (hour >= 20 && hour < 5) {
+        background = 'night';
+    } else if(hour >= 5 && hour < 8) {
+        background = "sunrise";
+    } else if (hour >= 7 && hour < 17) {
+        background = "day";
+    } else if (hour >= 17 && hour < 20) {
+        background = "sunset";
+    } else {
+        background = "black";
+    }
+
+    backgroundBox.removeClass();
+    setTimeout(function() {
+        backgroundBox.addClass(background);
+    }, 500);
+}
+
+/**
  * Update de DOM with the weather data
  */
 function showWeather(weatherData) {
@@ -130,17 +159,20 @@ function display(box, errorMsg) {
             toggleBox(errorBox, false);
             toggleBox(weatherBox, false);
             toggleBox(loaderBox, true);
+            setBackground();
             break;
         case 'weather':
             toggleBox(errorBox, false);
             toggleBox(loaderBox, false);
             toggleBox(weatherBox, true);
+            setBackground();
             break;
         case 'error':
             setErrorMsg(errorBox, errorMsg);
             toggleBox(loaderBox, false);
             toggleBox(weatherBox, false);
             toggleBox(errorBox, true);
+            setBackground();
             break;
         default:
             console.log('must provied a box element!');

@@ -55,9 +55,12 @@ body {
 	color: #EDEDED;
 	font-family: 'Raleway', sans-serif;
 	text-align: center;
+	transition: background 0.5s linear;
+	-webkit-transition: background 0.5s linear;
 }
-main {  /* TODO:  with not 100%*/
+main {
 	height: 100vh;
+	max-width: 100vw;
 }
 
 .flex-container {
@@ -106,16 +109,31 @@ footer p a {
 }
 
 .black {
-	background-color: #000000;
+	background: #000000;
 }
 .sunset {
 	background: #15313b;
 	background: -webkit-linear-gradient(to bottom, #15313b , #bf5e46);
 	background: linear-gradient(to bottom, #15313b , #bf5e46);
 }
+.night {
+	background: #000000;
+	background: -webkit-linear-gradient(to bottom, #000000, #283E51);
+	background: linear-gradient(to bottom, #000000, #283E51);
+}
+.sunrise {
+	background: #FF5F6D;
+	background: -webkit-linear-gradient(to bottom, #FF5F6D , #FFC371);
+	background: linear-gradient(to bottom, #FF5F6D , #FFC371);
+}
+.day {
+	background: #00d2ff;
+	background: -webkit-linear-gradient(to bottom, #00d2ff , #928DAB);
+	background: linear-gradient(to bottom, #00d2ff , #928DAB);
+}
 .loader-in {
 	height: 100vh;
-	width: 100vw;
+	max-width: 100vw;
 	display: flex;
 	align-items: center;
 	justify-content: center;
