@@ -65,10 +65,17 @@ main {
 
 .flex-container {
 	min-height: 90vh;
+	display: -webkit-box;
+	display: -ms-flexbox;
 	display: flex;
-	flex-flow: column wrap;
-	align-items: center;
-	justify-content: center;
+	-ms-flex-flow: column wrap;
+	    flex-flow: column wrap;
+	-webkit-box-align: center;
+	    -ms-flex-align: center;
+	        align-items: center;
+	-webkit-box-pack: center;
+	    -ms-flex-pack: center;
+	        justify-content: center;
 }
 
 .w-today {
@@ -82,12 +89,15 @@ main {
 }
 footer {
 	min-height: 10vh;
+	display: -webkit-box;
+	display: -ms-flexbox;
 	display: flex;
 }
 footer p {
 	width: 100%;
 	color: #FDFDFD;
-	align-self: flex-end;
+	-ms-flex-item-align: end;
+	    align-self: flex-end;
 }
 footer p a {
 	text-decoration: none;
@@ -97,6 +107,7 @@ footer p a {
 .weather, .error {
 	max-width: 90vw;
 	opacity: 1;
+	-webkit-transition: opacity 0.5s linear;
 	transition: opacity 0.5s linear;
 }
 
@@ -134,9 +145,16 @@ footer p a {
 .loader-in {
 	height: 100vh;
 	max-width: 100vw;
+	display: -webkit-box;
+	display: -ms-flexbox;
 	display: flex;
-	align-items: center;
-	justify-content: center;
+	-webkit-box-align: center;
+	    -ms-flex-align: center;
+	        align-items: center;
+	-webkit-box-pack: center;
+	    -ms-flex-pack: center;
+	        justify-content: center;
+	-webkit-transition: opacity 0.5s linear;
 	transition: opacity 0.5s linear;
 }
 .disapear {

@@ -96,7 +96,7 @@ function setBackground() {
     var background = "";
     var backgroundBox = $("#background");
 
-    if (hour >= 20 && hour < 5) {
+    if (hour >= 20) {
         background = 'night';
     } else if(hour >= 5 && hour < 8) {
         background = "sunrise";
@@ -106,6 +106,7 @@ function setBackground() {
         background = "sunset";
     } else {
         background = "black";
+        console.log(hour);
     }
 
     backgroundBox.removeClass();
@@ -182,35 +183,37 @@ function display(box, errorMsg) {
 
 // the magic start here
 (function(){
-    // check browser support
-    if (!navigator.geolocation) {
-        var errMsg = "<p>Sorry, your browser has not support for geolocation. Try with Firefox or Chrome</p>";
+    setTimeout(function(){
+        // check browser support
+        if (!navigator.geolocation) {
+            var errMsg = "<p>Sorry, your browser has not support for geolocation. Try with Firefox or Chrome</p>";
 
-        display('error', errMsg);
+            display('error', errMsg);
 
-        return;
-    }
-
-    navigator.geolocation.getCurrentPosition(function(position) {
-        var coords = {
-            lon: position.coords.latitude,
-            log: position.coords.longitude
-        };
-
-        // get weather data & update the DOM
-        getWeatherData(coords, showWeather);
-
-        // change background gradient by the hours
-
-    }, function(err) { // on error
-        // default msg
-        var errMsg = "<p>Sorry, something it's not right. Try again.</p>";
-
-        // user block
-        if (err.code === 1) {
-            errMsg = "<p>Please, we need that you enable geolocation in your browser.</p>";
+            return;
         }
 
-        display('error', errMsg);
-    });
+        navigator.geolocation.getCurrentPosition(function(position) {
+            var coords = {
+                lon: position.coords.latitude,
+                log: position.coords.longitude
+            };
+
+            // get weather data & update the DOM
+            getWeatherData(coords, showWeather);
+
+            // change background gradient by the hours
+
+        }, function(err) { // on error
+            // default msg
+            var errMsg = "<p>Sorry, something it's not right. Try again.</p>";
+
+            // user block
+            if (err.code === 1) {
+                errMsg = "<p>Please, we need that you enable geolocation in your browser.</p>";
+            }
+
+            display('error', errMsg);
+        });
+    }, 500);
 })();
