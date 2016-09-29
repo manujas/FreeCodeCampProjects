@@ -1,0 +1,15 @@
+html, body {
+  height: 100%;
+}
+
+.search-form {
+  height: 100vh;
+}
+
+#wiki_search {
+  margin-bottom: 0;
+}
+#wiki_helptext {
+  padding-left: 42px;
+  font-size: 0.8rem;
+}
