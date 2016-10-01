@@ -7,13 +7,22 @@ html, body {
 }
 
 .search-form {
-  height: 100vh;
+  height: auto;
+  min-height: 10vh;
+  transition: all 1s cubic-bezier(0.54, -0.11, 0.21, 1.02);
+  margin-top: 2vh;
 }
+
+.search-form.full-height {
+  min-height: 100vh;
+  margin-top: 0;
+}
+
 
 #wiki_search {
   margin-bottom: 0;
 }
-#wiki_helptext {
+.wiki_helptext {
   padding-left: 42px;
   font-size: 0.8rem;
 }
