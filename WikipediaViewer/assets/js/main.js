@@ -4,6 +4,11 @@ $("#wiki_search").keyup(function (e) {
     if (searchForm.hasClass("full-height")) {
       searchForm.removeClass("full-height")
     }
+    var searchResults = $(".search-results").children();
+    if (searchResults.children()) {
+      searchResults.children().html('');
+    }
+
     searchOnWikipedia($(this).val());
   }
 });
