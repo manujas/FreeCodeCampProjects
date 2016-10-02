@@ -6,7 +6,7 @@ $("#wiki_search").keyup(function (e) {
     }
     var searchResults = $(".search-results").children();
     if (searchResults.children()) {
-      searchResults.children().html('');
+      searchResults.html('');
     }
 
     searchOnWikipedia($(this).val());
