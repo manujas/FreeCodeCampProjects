@@ -1,5 +1,3 @@
-var str = '';
-
 $("#wiki_search").keyup(function (e) {
   if (e.keyCode == 13) {
     var searchForm = $(".search-form");
@@ -24,8 +22,6 @@ function searchOnWikipedia(query) {
 
 function showResults(results) {
   for(var id in results) {
-    console.log(id);
-    console.log(results[id]);
     insertNewHtmlCard(results[id]);
   }
 }
@@ -43,7 +39,6 @@ function insertNewHtmlCard(result) {
   $(".search-results").children().append(card);
   $(".card-title").last().children().html(result.title).attr("href", wikiURL+result.pageid);
   $(".card-extract").last().html(result.extract.truncate(100));
-  str = result.extract;
 }
 
 String.prototype.truncate = function(len) {
