@@ -1,3 +1,5 @@
+var str = '';
+
 $("#wiki_search").keyup(function (e) {
   if (e.keyCode == 13) {
     var searchForm = $(".search-form");
@@ -31,22 +33,21 @@ function showResults(results) {
 function insertNewHtmlCard(result) {
   var wikiURL = "https://en.wikipedia.org/?curid=";
   var card = "<div class='col s12 m6'> \
-                <div class='card horizontal'> \
-                  <div class='card-image'> \
-                    <img src=''> \
-                  </div> \
-                  <div class='card-stacked'> \
-                    <div class='card-content'> \
-                      <span class='card-title'><a href=''></a></span> \
-                      <p class='card-extract'></p> \
-                    </div> \
+                <div class='card'> \
+                  <div class='card-content'> \
+                    <span class='card-title'><a href='' target='_blank'></a></span> \
+                    <p class='card-extract'></p> \
                   </div> \
                 </div> \
               </div>";
   $(".search-results").children().append(card);
   $(".card-title").last().children().html(result.title).attr("href", wikiURL+result.pageid);
-  if (result.thumbnail) {
-    $(".card-image").last().children().attr("src", result.thumbnail.source);
-  }
-  $(".card-extract").last().html(result.extract);
+  $(".card-extract").last().html(result.extract.truncate(100));
+  str = result.extract;
 }
+
+String.prototype.truncate = function(len) {
+    return (this.length > len)
+      ? this.substring(0, len) + "..."
+      : this.substring(0, this.length);
+};
