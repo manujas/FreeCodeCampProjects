@@ -21,20 +21,32 @@ function searchOnWikipedia(query) {
 }
 
 function showResults(results) {
-  for(var i = 0; i < result.length; i++) {
-    insertNewHtmlCard(function(result) {
-      $('')
-    });
+  for(var id in results) {
+    console.log(id);
+    console.log(results[id]);
+    insertNewHtmlCard(results[id]);
   }
 }
 
-function insertNewHtmlCard(callback) {
-  var card = "<div class='card'> \
-                <div class='card-content'> \
-                  <span class='card-title'></span> \
-                  <p></p> \
+function insertNewHtmlCard(result) {
+  var wikiURL = "https://en.wikipedia.org/?curid=";
+  var card = "<div class='col s12 m6'> \
+                <div class='card horizontal'> \
+                  <div class='card-image'> \
+                    <img src=''> \
+                  </div> \
+                  <div class='card-stacked'> \
+                    <div class='card-content'> \
+                      <span class='card-title'><a href=''></a></span> \
+                      <p class='card-extract'></p> \
+                    </div> \
+                  </div> \
                 </div> \
               </div>";
-
-  callback();
+  $(".search-results").children().append(card);
+  $(".card-title").last().children().html(result.title).attr("href", wikiURL+result.pageid);
+  if (result.thumbnail) {
+    $(".card-image").last().children().attr("src", result.thumbnail.source);
+  }
+  $(".card-extract").last().html(result.extract);
 }
