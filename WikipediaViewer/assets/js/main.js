@@ -29,12 +29,13 @@ function showResults(results) {
   for(var id in results) {
     insertNewHtmlCard(results[id]);
   }
+  toggleCardsAnimation();
 }
 
 function insertNewHtmlCard(result) {
   var wikiURL = "https://en.wikipedia.org/?curid=";
-  var card = "<div class='col s12 m6'> \
-                <div class='card'> \
+  var card = "<div class='col s12 m6 card-col'> \
+                <div class='card hidden'> \
                   <div class='card-content'> \
                     <span class='card-title'><a href='' target='_blank'></a></span> \
                     <p class='card-extract'></p> \
@@ -43,7 +44,15 @@ function insertNewHtmlCard(result) {
               </div>";
   $(".search-results").children().append(card);
   $(".card-title").last().children().html(result.title).attr("href", wikiURL+result.pageid);
-  $(".card-extract").last().html(result.extract.truncate(100));
+  $(".card-extract").last().html(result.extract.truncate(50));
+}
+
+function toggleCardsAnimation() {
+  $(".card").each(function(i, card) {
+    setTimeout(function() {
+      $(card).toggleClass('hidden');
+    }, 250 * i);
+  });
 }
 
 String.prototype.truncate = function(len) {

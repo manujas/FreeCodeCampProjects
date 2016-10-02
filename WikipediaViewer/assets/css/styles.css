@@ -20,6 +20,8 @@ html, body {
 
 .card {
   height: 150px;
+  transition: all 1s ease;
+  overflow: hidden;
 }
 
 .card .card-content .card-title {
@@ -31,10 +33,24 @@ html, body {
   margin-top: 1rem;
 }
 
+.hidden {
+  height: 0px;
+}
+
 #wiki_search {
   margin-bottom: 0;
 }
 .wiki_helptext {
   padding-left: 42px;
   font-size: 0.8rem;
+}
+
+@media only screen and (min-width: 993px) {
+  .card {
+    height: 100px;
+  }
+}
+
+@media only screen and (min-width: 601px) {
+
 }
