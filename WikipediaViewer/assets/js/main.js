@@ -47,16 +47,16 @@ function insertNewHtmlCard(result) {
   $(".card-extract").last().html(result.extract.truncate(50));
 }
 
-function toggleCardsAnimation() {
+function toggleCardsAnimation(eraseCard) {
   $(".card").each(function(i, card) {
     setTimeout(function() {
       $(card).toggleClass('hidden');
-    }, 250 * i);
+    }, 250);
   });
 }
 
 String.prototype.truncate = function(len) {
-    return (this.length > len)
-      ? this.substring(0, len) + "..."
-      : this.substring(0, this.length);
+  return (this.length > len)
+    ? this.substring(0, len) + "..."
+    : this.substring(0, this.length);
 };
