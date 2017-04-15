@@ -47,7 +47,7 @@ html, body {
 
 @media only screen and (min-width: 993px) {
   .card {
-    height: 100px;
+    max-height: 120px;
   }
 }
 
