@@ -1,36 +1,43 @@
-$('#wiki_search').keyup( function(e) {
+const searchInput = document.querySelector('#wiki_search');
+searchInput.onkeyup = function (e) {
   // onlly listen enter key
   if (e.keyCode !== 13) {
     return;
   }
 
   // save search value
-  const searchValue = $(this).val();
+  const searchValue = this.value.trim();
 
   // only serach if the input has char
-  if (searchValue == '') {
+  if (searchValue === '') {
     return;
   }
 
   moveSearchFormToTop();
   cleanSearchResult();
   searchOnWikipedia(searchValue);
-});
+};
 
 /**
  * Search on wikipedia
  * @param  String query
  */
 const searchOnWikipedia = query => {
-  const url = 'https://crossorigin.me/https://en.wikipedia.org/w/api.php?format=json&action=query&generator=search&gsrnamespace=0&gsrlimit=10&prop=pageimages|extracts&pilimit=max&exintro&explaintext&exsentences=1&exlimit=max&gsrsearch=' + query;
+  const url = `https://crossorigin.me/https://en.wikipedia.org/w/api.php?format=json&action=query&generator=search&gsrnamespace=0&gsrlimit=10&prop=pageimages|extracts&pilimit=max&exintro&explaintext&exsentences=1&exlimit=max&gsrsearch=${query}`;
 
-  $.ajax( {
-    url: url,
-    type: 'GET',
-    success: data => {
-      showResults(data.query.pages);
+  const xhr = new XMLHttpRequest();
+  xhr.open('GET', url);
+  xhr.onreadystatechange = function() {
+    if (xhr.readyState === 4) {
+      if (xhr.status === 200) {
+        const data = JSON.parse(xhr.responseText);
+        showResults(data.query.pages);
+      } else {
+        console.log('falló');
+      }
     }
-  });
+  };
+  xhr.send();
 };
 
 /**
@@ -49,39 +56,40 @@ const showResults = results => {
  * @param  Json result
  */
 const insertNewHtmlCard = result => {
-  const wikiURL = 'https://en.wikipedia.org/?curid=';
-  const card = '<div class="col s12 m12 card-col"> \
+  const wikiURL = `https://en.wikipedia.org/?curid=${result.pageid}`;
+  const card = `<div class="col s12 m12 card-col"> \
                 <div class="card hidden"> \
                   <div class="card-content"> \
-                    <span class="card-title"><a href="" target="_blank"></a></span> \
-                    <p class="card-extract"></p> \
+                    <span class="card-title"><a href="${wikiURL}" target="_blank">${result.title}</a></span> \
+                    <p class="card-extract">${result.extract.truncate(150)}</p> \
                   </div> \
                 </div> \
-              </div>';
-  $('.search-results').children().append(card);
-  $('.card-title').last().children().html(result.title).attr('href', wikiURL+result.pageid);
-  $('.card-extract').last().html(result.extract.truncate(150));
+              </div>`;
+
+  const searchResults = document.querySelector('.search-results');
+  searchResults.insertAdjacentHTML('beforeend', card);
 };
 
 /**
  * Toggle animation for a card
- * @param  card
  */
-const toggleCardsAnimation = card => {
-  $('.card').each((i, card) => {
+const toggleCardsAnimation = () => {
+  const cards = document.querySelectorAll('.card');
+  cards.forEach((card, i) => {
     setTimeout(() => {
-      $(card).toggleClass('hidden');
+      card.classList.remove('hidden');
     }, 250 * i);
   });
 };
 
 /**
- * Animate the serch form from original center position to a top position
+ * Animate the search form from original center position to a top position
+ * if needed
  */
 const moveSearchFormToTop = () => {
-  const searchForm = $('.search-form');
-  if (searchForm.hasClass('full-height')) {
-    searchForm.removeClass('full-height');
+  const searchForm = document.querySelector('.search-form');
+  if (searchForm.classList.contains('full-height')) {
+    searchForm.classList.remove('full-height');
   }
 };
 
@@ -89,9 +97,11 @@ const moveSearchFormToTop = () => {
  * Remove all result's card from the DOM
  */
 const cleanSearchResult = () => {
-  const searchResults = $('.search-results').children();
-  if (searchResults.children()) {
-    searchResults.html('');
+  const resultsCards = document.querySelectorAll('.card-col');
+  if (resultsCards) {
+    resultsCards.forEach((card) => {
+      card.parentNode.removeChild(card);
+    });
   }
 };
 
