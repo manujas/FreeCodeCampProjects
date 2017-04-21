@@ -1,32 +1,40 @@
-const searchInput = document.querySelector('#wiki_search');
-searchInput.onkeyup = function (e) {
-  // onlly listen enter key
-  if (e.keyCode !== 13) {
-    return;
-  }
+// not perfect, but for now works...
+window.onload = main();
 
-  // save search value
-  const searchValue = this.value.trim();
+/**
+ * Main script
+ */
+function main() {
+  const searchInput = document.querySelector('#wiki_search');
+  searchInput.onkeyup = function (e) {
+    // onlly listen enter key
+    if (e.keyCode !== 13) {
+      return;
+    }
 
-  // only serach if the input has char
-  if (searchValue === '') {
-    return;
-  }
+    // save search value
+    const searchValue = this.value.trim();
 
-  moveSearchFormToTop();
-  cleanSearchResult();
-  searchOnWikipedia(searchValue);
-};
+    // only serach if the input has char
+    if (searchValue === '') {
+      return;
+    }
 
-searchInput.onclick = function (e) {
-  cleanUpSearchInput();
-};
+    moveSearchFormToTop();
+    cleanSearchResult();
+    searchOnWikipedia(searchValue);
+  };
+
+  searchInput.onclick = function (e) {
+    cleanUpSearchInput();
+  };
+}
 
 /**
  * Search on wikipedia
  * @param  String query
  */
-const searchOnWikipedia = query => {
+function searchOnWikipedia(query) {
   const url = `https://crossorigin.me/https://en.wikipedia.org/w/api.php?format=json&action=query&generator=search&gsrnamespace=0&gsrlimit=10&prop=pageimages|extracts&pilimit=max&exintro&explaintext&exsentences=1&exlimit=max&gsrsearch=${query}`;
 
   const xhr = new XMLHttpRequest();
@@ -43,48 +51,47 @@ const searchOnWikipedia = query => {
     }
   };
   xhr.send();
-};
+}
 
 /**
  * Populate the DOM with the result from wikipedia
  * @param  Json results
  */
-const showResults = results => {
+function showResults(results) {
   for(const id in results) {
     insertNewHtmlCard(results[id]);
   }
   toggleCardsAnimation();
-};
+}
 
 /**
  * Show error on the dom element that recive
- * @param  element where put the error messagge
  * @param  error
  */
-const showErrorSearch = error => {
+function showErrorSearch(error) {
   const searchInput = document.querySelector('#wiki_search');
   if (!searchInput.classList.contains('error')) {
     searchInput.classList.add('error');
   }
   searchInput.value = error;
-};
+}
 
 /**
  * Delete previous search query and remove error class from search input
  */
-const cleanUpSearchInput = () => {
+function cleanUpSearchInput() {
   const searchInput = document.querySelector('#wiki_search');
   searchInput.value = '';
   if (searchInput.classList.contains('error')) {
     searchInput.classList.remove('error');
   }
-};
+}
 
 /**
  * Creates a result's card
  * @param  Json result
  */
-const insertNewHtmlCard = result => {
+function insertNewHtmlCard(result) {
   const wikiURL = `https://en.wikipedia.org/?curid=${result.pageid}`;
   const card = `<div class="col s12 m12 card-col"> \
                 <div class="card hidden"> \
@@ -97,42 +104,42 @@ const insertNewHtmlCard = result => {
 
   const searchResults = document.querySelector('.search-results');
   searchResults.insertAdjacentHTML('beforeend', card);
-};
+}
 
 /**
  * Toggle animation for a card
  */
-const toggleCardsAnimation = () => {
+function toggleCardsAnimation() {
   const cards = document.querySelectorAll('.card');
   cards.forEach((card, i) => {
     setTimeout(() => {
       card.classList.remove('hidden');
     }, 250 * i);
   });
-};
+}
 
 /**
  * Animate the search form from original center position to a top position
  * if needed
  */
-const moveSearchFormToTop = () => {
+function moveSearchFormToTop() {
   const searchForm = document.querySelector('.search-form');
   if (searchForm.classList.contains('full-height')) {
     searchForm.classList.remove('full-height');
   }
-};
+}
 
 /**
  * Remove all result's card from the DOM
  */
-const cleanSearchResult = () => {
+function cleanSearchResult() {
   const resultsCards = document.querySelectorAll('.card-col');
   if (resultsCards) {
     resultsCards.forEach((card) => {
       card.parentNode.removeChild(card);
     });
   }
-};
+}
 
 // added a truncate static method to String prototype
 String.prototype.truncate = function(len) {
