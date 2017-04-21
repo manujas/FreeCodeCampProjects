@@ -33,7 +33,8 @@ const searchOnWikipedia = query => {
         const data = JSON.parse(xhr.responseText);
         showResults(data.query.pages);
       } else {
-        console.log('falló');
+        const error = 'Ups!, something goes wrong. Please, try agan.';
+        showErrorSearch(error);
       }
     }
   };
@@ -49,6 +50,19 @@ const showResults = results => {
     insertNewHtmlCard(results[id]);
   }
   toggleCardsAnimation();
+};
+
+/**
+ * Show error on the dom element that recive
+ * @param  element where put the error messagge
+ * @param  error
+ */
+const showErrorSearch = error => {
+  const searchInput = document.querySelector('#wiki_search');
+  if (!searchInput.classList.contains('error')) {
+    searchInput.classList.add('error');
+  }
+  searchInput.value = error;
 };
 
 /**
