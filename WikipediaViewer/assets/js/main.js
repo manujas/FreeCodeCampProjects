@@ -18,6 +18,10 @@ searchInput.onkeyup = function (e) {
   searchOnWikipedia(searchValue);
 };
 
+searchInput.onclick = function (e) {
+  cleanUpSearchInput();
+};
+
 /**
  * Search on wikipedia
  * @param  String query
@@ -63,6 +67,17 @@ const showErrorSearch = error => {
     searchInput.classList.add('error');
   }
   searchInput.value = error;
+};
+
+/**
+ * Delete previous search query and remove error class from search input
+ */
+const cleanUpSearchInput = () => {
+  const searchInput = document.querySelector('#wiki_search');
+  searchInput.value = '';
+  if (searchInput.classList.contains('error')) {
+    searchInput.classList.remove('error');
+  }
 };
 
 /**
