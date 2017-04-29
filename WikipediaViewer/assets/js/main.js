@@ -2,12 +2,17 @@
 window.onload = main();
 
 /**
- * Main script
+ * Main script, do the magic ¿?
  */
 function main() {
   const searchInput = document.querySelector('#wiki_search');
   searchInput.onkeyup = function (e) {
-    // onlly listen enter key
+    // not so pretty, but do the thing...
+    if (searchInput.classList.contains('error')) {
+      searchInput.classList.remove('error');
+    }
+
+    // onlly continue if enter key is press
     if (e.keyCode !== 13) {
       return;
     }
@@ -20,9 +25,9 @@ function main() {
       return;
     }
 
-    moveSearchFormToTop();
-    cleanSearchResult();
-    searchOnWikipedia(searchValue);
+    searchOnWikipedia(searchValue)
+    .then(data => showResults(data.query.pages))
+    .catch(error => showErrorSearch(error));
   };
 
   searchInput.onclick = function (e) {
@@ -35,22 +40,26 @@ function main() {
  * @param  String query
  */
 function searchOnWikipedia(query) {
-  const url = `https://crossorigin.me/https://en.wikipedia.org/w/api.php?format=json&action=query&generator=search&gsrnamespace=0&gsrlimit=10&prop=pageimages|extracts&pilimit=max&exintro&explaintext&exsentences=1&exlimit=max&gsrsearch=${query}`;
+  return new Promise((resolve, reject) => {
+    const url = `https://crossorigin.me/https://en.wikipedia.org/w/api.php?format=json&action=query&generator=search&gsrnamespace=0&gsrlimit=10&prop=pageimages|extracts&pilimit=max&exintro&explaintext&exsentences=1&exlimit=max&gsrsearch=${query}`;
 
-  const xhr = new XMLHttpRequest();
-  xhr.open('GET', url);
-  xhr.onreadystatechange = function() {
-    if (xhr.readyState === 4) {
-      if (xhr.status === 200) {
-        const data = JSON.parse(xhr.responseText);
-        showResults(data.query.pages);
-      } else {
-        const error = 'Ups!, something goes wrong. Please, try agan.';
-        showErrorSearch(error);
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET', url);
+    xhr.onreadystatechange = function() {
+      if (xhr.readyState === 4) {
+        if (xhr.status === 200) {
+          resolve(JSON.parse(xhr.responseText));
+          // const data = JSON.parse(xhr.responseText);
+          // showResults(data.query.pages);
+        } else {
+          const error = 'Ups!, something goes wrong. Please, try agan.';
+          reject(error);
+          // showErrorSearch(error);
+        }
       }
-    }
-  };
-  xhr.send();
+    };
+    xhr.send();
+  });
 }
 
 /**
@@ -58,6 +67,8 @@ function searchOnWikipedia(query) {
  * @param  Json results
  */
 function showResults(results) {
+  moveSearchFormToTop();
+  cleanSearchResult();
   for(const id in results) {
     insertNewHtmlCard(results[id]);
   }
